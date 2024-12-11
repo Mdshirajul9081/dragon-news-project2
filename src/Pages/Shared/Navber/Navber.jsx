@@ -1,12 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
-import user from '../../../assets/user.png'
+import userIm from '../../../assets/user.png'
+import { useContext } from "react";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Navber = () => {
+  const {user,logOut}=useContext(AuthContext)
+  const handelLogOut=()=>{
+    logOut()
+    .then(() => {
+      console.log('User logged out');
+    })
+    .catch((error) => {
+      console.error("Error logging out:", error);
+    });
+  }
+
   const nabLinks=<>
   <li><NavLink to="/" >Home</NavLink></li>
   <li><NavLink to="/about" >About</NavLink></li>
   <li><NavLink to="/carrer" >Carrer</NavLink></li>
   <li><NavLink to="/login" >Login</NavLink></li>
+  <li><NavLink to="/register" >Register</NavLink></li>
   </>
   return (
     <div className="navbar bg-base-100">
@@ -42,12 +56,18 @@ const Navber = () => {
     <div className="navbar-end">
     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
         <div className="w-10 rounded-full">
-          <img src={user} alt="" />
+          <img src={userIm} alt="" />
         </div>
         </div>
-      <Link to="/login">
+        {
+          user ?
+          <button onClick={handelLogOut} >singOut</button>:
+          <Link to="/login">
           <button className="btn">Login</button>
-      </Link>
+          </Link>
+        }
+
+      
       
     </div>
   </div>
