@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link,  useLocation, useNavigate } from "react-router-dom";
 import Navber from "../Shared/Navber/Navber";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -6,6 +6,10 @@ import { AuthContext } from "../../Provider/AuthProvider";
 
 const Login = () => {
   const{singIn}=useContext(AuthContext)
+  const location=useLocation()
+  const navigate=useNavigate()
+  console.log('location in the login page 0',location);
+
   const handelLogin = (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -13,12 +17,15 @@ const Login = () => {
     const password = form.get('password'); // Get the password field
     console.log(email); // Outputs the entered email
     console.log(password); // Outputs the entered password
+
     
 
     // user singin
     singIn(email,password)
     .then((result) => {
       console.log(result.user);
+      // navigate
+      navigate(location?.state?location.state:'/')
     })
     .catch((error) => {
       console.error(error);
